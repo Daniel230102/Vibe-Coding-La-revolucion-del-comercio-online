@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "User": {
+      "title": "Localink User",
+      "description": "User account with role-based access.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "shop", "customer"] },
+        "shopId": { "type": "string" }
+      },
+      "required": ["email", "name", "role"]
+    },
+    "Shop": {
+      "title": "Local Store",
+      "description": "A local business registered on the platform.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "description": { "type": "string" },
+        "address": { "type": "string" },
+        "bannerUrl": { "type": "string" },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["name", "slug", "ownerId"]
+    },
+    "Product": {
+      "title": "Store Product",
+      "description": "An item for sale in a shop.",
+      "type": "object",
+      "properties": {
+        "shopId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "stock": { "type": "number" },
+        "imageUrl": { "type": "string" }
+      },
+      "required": ["shopId", "name", "price", "stock"]
+    },
+    "Employee": {
+      "title": "Shop Employee",
+      "description": "Staff member registered to a specific shop.",
+      "type": "object",
+      "properties": {
+        "shopId": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "email": { "type": "string" }
+      },
+      "required": ["shopId", "name", "role", "email"]
+    },
+    "Schedule": {
+      "title": "Work Shift",
+      "description": "Assigned work time for an employee.",
+      "type": "object",
+      "properties": {
+        "shopId": { "type": "string" },
+        "employeeId": { "type": "string" },
+        "shifts": { "type": "array" }
+      },
+      "required": ["shopId", "employeeId", "shifts"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "System users." },
+    "/shops/{shopId}": { "schema": "Shop", "description": "Registered local stores." },
+    "/products/{productId}": { "schema": "Product", "description": "Store inventory items." },
+    "/employees/{employeeId}": { "schema": "Employee", "description": "Store personnel." },
+    "/schedules/{scheduleId}": { "schema": "Schedule", "description": "Staff shifts." }
+  }
+}
