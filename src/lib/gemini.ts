@@ -1,6 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });
+const getGeminiKey = () => {
+  // En Vite, process.env es inyectado por vite.config.ts definiendo el valor
+  const key = (typeof process !== 'undefined' && process.env.GEMINI_API_KEY) || import.meta.env.VITE_GEMINI_API_KEY;
+  if (!key || key === "undefined" || key === "YOUR_GEMINI_API_KEY") {
+    console.warn("GEMINI_API_KEY no configurada. Las funciones de IA pueden no funcionar.");
+    return "NO_KEY";
+  }
+  return key;
+};
+
+const ai = new GoogleGenAI({ apiKey: getGeminiKey() });
 
 export const generateProductDescription = async (productName: string) => {
   try {
